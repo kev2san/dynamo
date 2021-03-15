@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import Home from './components/Home'
+import Gestion from './components/Gestion'
+import Crear from './components/Crear'
+import NotFound from './components/NotFound'
+import Login from './components/Login'
+import Personal from './components/Personal'
 
 function App() {
+  const [ token, setToken ] = useState(localStorage.getItem('token'))
+  
+  if(!token){
+    return <Login setToken={setToken}/>
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path={"/"} component={Home}/>
+        <Route exact path={"/gestion/:id"} component={Gestion}/>
+        <Route exact path={"/crear"} component={Crear}/>
+        <Route exact path={"/personal/:id"} component={Personal}/>
+        <Route exact component={NotFound}></Route>
+      </Switch>
+    </Router>
   );
 }
 
